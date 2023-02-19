@@ -1,35 +1,54 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-#  ruby version to use
-ARG RUBY_VERSION=3.2.0
+# Ruby version to use
+FROM ruby:3.2.0
 
-FROM ruby:${RUBY_VERSION}-slim as base
+# Install dependencies
+RUN apt-get update && apt-get install -y postgresql\
+    build-essential \
+    libpq-dev \
+    postgresql-client \
+    && apt-get clean 
+
+# Create a new user for running the app
+RUN useradd -m -s /bin/bash rails
+USER root
+
+RUN mkdir /app
 
 WORKDIR /app
-COPY . /app
 
-ENV RAILS_ENV="production" \
-     BULD_WITHOUT="development test" \
-     REDIS_URL="redis://redis:6379/0" \
-     RAILS_MASTER_KEY="3acff2d1fc63ca498260a9c0b4ea218b"
-     
+# Copy the app folder
+COPY . toky/app
 
-FROM base as build
-
-# Install build dependencies
-RUN apt-get update && \
-    apt-get install -y build-essential libpq-dev nodejs && 
-
-# Install gems  
+# Copy the database configuration
+COPY config/database.yml config/database.yml
+# Copy the Gemfile and install the gems
 COPY Gemfile Gemfile.lock ./
+RUN gem install bundler && bundle install
+RUN service postgresql start
+RUN rails assets:precompile
+RUN rails db:create
+RUN rails db:migrate
 
-
-RUN bundle install && \
-    rails assets:precompile && \
-    rails db:create db:migrate 
-
+# Copy the rest of the app
 COPY . .
 
-FROM base 
+# Copy the configuration files
+# COPY config/redis.yml config/redis.yml
 
+# Set the environment variables
+ENV RAILS_ENV="production" \
+    BUILD_WITHOUT="development test" \
+    RAILS_MASTER_KEY="3acff2d1fc63ca498260a9c0b4ea218b" \
+    REDIS_URL="redis://redis:6379/0"
+
+# Set the entrypoint
+ENTRYPOINT ["./bin/docker-entrypoint.sh"]
+
+# Expose port 3000
+EXPOSE 3000
+
+# Start the server
+CMD ["rails", "server", "-b", "0.0.0.0"]
 
