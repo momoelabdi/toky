@@ -3,19 +3,8 @@
 # Ruby version to use
 FROM ruby:3.2.0
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get dist-upgrade -y && \
-    apt-get install -y postgresql \
-                       build-essential \
-                       libpq-dev \
-                       postgresql-client && \
-    apt-get clean
-
-# RUN apt-get update  && apt-get dist-upgrade
-# Create a new user for running the app
 RUN useradd -m -s /bin/bash rails
-USER root
+# USER root
 
 RUN mkdir /app
 
@@ -24,32 +13,35 @@ WORKDIR /app
 # Copy the app folder
 COPY . toky/app
 
-# Copy the database configuration
-COPY config/database.yml config/database.yml
-# Copy the Gemfile and install the gems
-COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install
-RUN service postgresql start
-RUN rails assets:precompile
-RUN rails db:create
-RUN rails db:migrate
-
-# Copy the rest of the app
 COPY . .
 
-# Copy the configuration files
-# COPY config/redis.yml config/redis.yml
+# Set the working directory to /app
+COPY config/database.yml config/database.yml
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y build-essential \
+                       nodejs \
+                       postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the Gemfile and Gemfile.lock into the container
+COPY Gemfile Gemfile.lock ./
+
+# Install the gems
+RUN gem install bundler && bundle install --jobs 20 --retry 5
+
+# Copy the rest of the application code into the container
+COPY . .
 
 # Set the environment variables
-# ENV RAILS_ENV="production" \
-#     BUILD_WITHOUT="development test" \
-#     RAILS_MASTER_KEY="3acff2d1fc63ca498260a9c0b4ea218b" \
-#     REDIS_URL="redis://redis:6379/0"
+ENV RAILS_ENV=development \
+    RAILS_SERVE_STATIC_FILES=true \
+    RAILS_MASTER_KEY="3acff2d1fc63ca498260a9c0b4ea218b" \
+    RAILS_LOG_TO_STDOUT=true 
 
-
-# Expose port 3000
+# Expose port 3000 to the Docker host, so we can access it from the outside
 EXPOSE 3000
 
-# Start the server
-CMD ["rails", "server", "-b", "127.0.0.1"]
 
+# Start the Rails server
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0","db:migrate"]
