@@ -34,4 +34,4 @@
 /config/credentials.yml.enc
 /config/initializers/devise.rb
 /Dockerfile
-/docker-compose.yml
+/bin/docker-entrypoint.sh
