@@ -1,2 +1,31 @@
 <h1>Clients#index</h1>
 <p>Find me in app/views/clients/index.html.erb</p>
+<table class="table">
+  <thead>
+
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Date of birth</th>
+      <th scope="col">Addres</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+  <%@clients.each do |client|%>
+    <tr>
+     <th scope="row"><%=client.id%></th> 
+      <td><%=client.name%> </td>
+      <td><%=client.last_name%> </td>
+      <td><%=client.addres%> </td>
+      <td><%=client.date_of_birth%> </td>
+      <td><%=client.phone%> </td>
+      <td><%=client.email%> </td>
+      <td><%=client.comment%> </td>
+    </tr>
+    <%end%>
+  </tbody>
+</table>
