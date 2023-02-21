@@ -1,2 +1,44 @@
-<h1>Clients#show</h1>
-<p>Find me in app/views/clients/show.html.erb</p>
+
+<h1>Client</h1>
+<%= form_tag client_path(@client),  method: :patch do %>
+  <div class="form-group">
+    <%= label_tag :id %>
+    <%= text_field_tag :id, @client.id, class: 'form-control', readonly: true %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :name %>
+    <%= text_field_tag :name, @client.name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :last_name %>
+    <%= text_field_tag :last_name, @client.last_name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :date_of_birth %>
+    <%= text_field_tag :date_of_birth, @client.date_of_birth, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :addres %>
+    <%= text_field_tag :addres, @client.addres, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :email %>
+    <%= text_field_tag :email, @client.email, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :phone %>
+    <%= text_field_tag :phone, @client.phone, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :comment %>
+    <%= text_area_tag :comment, @client.comment, class: 'form-control' %>
+    <input type="hidden" name="user_id" value="<%=  @current_user %>">
+  </div>
+  <%= submit_tag 'Update Client', class: 'btn btn-primary' %>
+<% end %>
+  <form action="/clients/<%= @client.id %>" method="post">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <%# <input type="hidden" name="_method" value="delete" class="btn btn-danger"> %>
+  <%# <input type="hidden" name="user_id" value="<%=  @current_user %>
+  <input type="submit" value="Delete" class="btn btn-danger">
+</form>

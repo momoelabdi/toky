@@ -10,7 +10,11 @@ class ClientsController < ApplicationController
     @client = Client.find(params[:id])
   end
 
-
+  def update
+    @client = Client.find(params[:id])
+    @client.update(client_params)
+    redirect_to root_path
+  end
   private
 
   def client_params

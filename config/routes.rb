@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
-  root 'homepage#index'
-  get 'clients/index'
-  get 'clients/create'
-  get 'clients/show'
   devise_for :users
+  resources :clients, only: [:index, :create, :show, :update]
+  root 'homepage#index'
+  get 'clients', to: 'clients#index'
+  get 'clients/:id', to: 'clients#show'
+  # get 'clients/create'
+  # get 'clients/update'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
