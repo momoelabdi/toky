@@ -97,6 +97,7 @@ GEM
     erubi (1.12.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    hiredis (0.6.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
@@ -243,6 +244,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  hiredis
   importmap-rails
   jbuilder
   pg (~> 1.1)
@@ -250,6 +252,7 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.2)
   redis
   redis-rails
+  redis-store
   selenium-webdriver
   sprockets-rails
   stimulus-rails
