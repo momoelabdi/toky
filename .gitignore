@@ -35,3 +35,6 @@
 /config/initializers/devise.rb
 /Dockerfile
 /bin/docker-entrypoint.sh
+/docker-compose.yml
+/.env
+/Dockerfile
