@@ -11,6 +11,43 @@
   </head>
 
   <body>
+   <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/listings/new">Create Listing</a>
+            </li>
+            <li class="nav-item">
+              <% if user_signed_in? %>
+                <div>
+                  Welcome
+                  <%= current_user.email %>
+                </div>
+                <%= button_to "Sign out",
+                destroy_user_session_path,
+                method: :delete,
+                class: "btn btn-primary" %>
+              <% else %>
+                <%= button_to "Login", new_user_session_path, class: "btn btn-primary" %>
+                <a href="/users/sign_up" class="btn btn-info" >Sign up</a>
+              <% end %>
+            </li>
+          </ul>
+
+          <%= form_tag root_path, method: :get, class: 'd-flex' do %>
+          <%= text_field_tag :search, params[:search], class: 'form-control me-2', placeholder: 'Search' %>
+          <%= submit_tag "Search", :location => nil, class: 'btn btn-outline-success' %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
 </html>

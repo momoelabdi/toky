@@ -1,5 +1,5 @@
 <%# Time.now.beginnig_of_hour %>
-<%=cache 'word-of-the-hour', expires_in: 10.seconds do%> 
+<h1>Client List</h1>
 <table class="table">
   <thead>
     <tr>
@@ -14,9 +14,10 @@
     </tr>
   </thead>
   <tbody>
+<%=cache 'word-of-the-hour', expires_in: 10.seconds do %>
   <%@clients.each do |client|%>
     <tr>
-     <th scope="row"><%=client.id%></th> 
+     <th scope="row"><%=client.id%></th>
       <td><%=client.name%> </td>
       <td><%=client.last_name%> </td>
       <td><%=client.addres%> </td>
@@ -24,9 +25,12 @@
       <td><%=client.phone%> </td>
       <td><%=client.email%> </td>
       <td><%=client.comment%> </td>
-    </tr>
+     <td><%= link_to "View", client_path(client.id) %></td>
 <%end%>
+<%end%>
+    </tr>
   </tbody>
 </table>
 
-<%end%>
+
+
