@@ -23,8 +23,8 @@ Rails.application.configure do
   Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
-    cache_servers = %w(redis://localhost:6379/0/cache)
-    config.cache_store = :redis_cache_store, {url: cache_servers,   expires_in: 90.minutes,
+    
+    config.cache_store = :redis_cache_store, {url: ENV['REDIS_URL'] ,   expires_in: 90.minutes,
       error_handler: -> (method:, returning:, exception:) {
         # Report errors to Sentry as warnings
         Raven.capture_exception(exception, level: 'warning',

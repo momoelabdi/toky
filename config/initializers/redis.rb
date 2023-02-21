@@ -1,9 +1,9 @@
 
-require 'redis'
+# require 'redis'
 
-redis_config = {
-    host: 'localhost',
-    port: 6379,
-}
+# redis_config = {
+#     host: 'localhost',
+#     port: 6379,
+# }
 
-$redis = Redis.new(redis_config)
+# $redis = Redis.new(redis_config)
