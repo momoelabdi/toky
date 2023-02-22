@@ -1,13 +1,14 @@
-
+<%=cache 'single-client', expires_in: 5.minutes do%>
 <h1>Client</h1>
 <%= form_tag client_path(@client),  method: :patch do %>
-  <div class="form-group">
+  <div class="form-group"> 
     <%= label_tag :id %>
     <%= text_field_tag :id, @client.id, class: 'form-control', readonly: true %>
-  </div>
+  </div> 
   <div class="form-group">
     <%= label_tag :name %>
     <%= text_field_tag :name, @client.name, class: 'form-control' %>
+     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   </div>
   <div class="form-group">
     <%= label_tag :last_name %>
@@ -32,7 +33,7 @@
   <div class="form-group">
     <%= label_tag :comment %>
     <%= text_area_tag :comment, @client.comment, class: 'form-control' %>
-    <input type="hidden" name="user_id" value="<%=  @current_user %>">
+    <%# <input type="hidden" name="user_id" value="<%=  @current_user %>
   </div>
   <%= submit_tag 'Update Client', class: 'btn btn-primary' %>
 <% end %>
@@ -42,3 +43,5 @@
   <%# <input type="hidden" name="user_id" value="<%=  @current_user %>
   <input type="submit" value="Delete" class="btn btn-danger">
 </form>
+
+<%end %>

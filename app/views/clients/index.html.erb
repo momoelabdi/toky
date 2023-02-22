@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-<%=cache 'word-of-the-hour', expires_in: 10.seconds do %>
+<%=cache 'word-of-the-hour', expires_in: 5.minutes do %>
   <%@clients.each do |client|%>
     <tr>
      <th scope="row"><%=client.id%></th>
@@ -26,9 +26,9 @@
       <td><%=client.email%> </td>
       <td><%=client.comment%> </td>
      <td><%= link_to "View", client_path(client.id) %></td>
-<%end%>
-<%end%>
     </tr>
+<%end%>
+<%end%>
   </tbody>
 </table>
 
