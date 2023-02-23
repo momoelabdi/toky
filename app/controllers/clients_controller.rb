@@ -28,13 +28,17 @@ class ClientsController < ApplicationController
 
   def update
     if @client.update(client_params)
+      # Update the client data in the cache
+      Rails.cache.write("client:#{@client[:id]}", @client)
+      # Expire the cache for this client
       expire_cache_for(@client)
       redirect_to root_path
     else
       render :edit
     end
   end
-
+  
+  
   def destroy
     if @client.destroy
       expire_cache_for(@client)
