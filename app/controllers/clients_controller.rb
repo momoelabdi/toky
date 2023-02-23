@@ -4,9 +4,9 @@ class ClientsController < ApplicationController
   before_action :set_client, only: [:show, :update, :destroy]
 
   def index
-    @clients = Rails.cache.fetch('clients', expires_in: 5.minutes, skip_nil: true ) do
+    @clients = Rails.cache.fetch('clients', expires_in: 30.minutes, skip_nil: true ) do
       clients = Client.order(id: :desc).all
-      fresh_when etag: clients
+      fresh_when(etag: clients, public: true)
       clients
     end
   end
@@ -21,7 +21,7 @@ class ClientsController < ApplicationController
   end
 
   def show
-    fresh_when etag: @client
+    fresh_when(strong_etag: @client, public: true)
   end
 
   def update
@@ -45,13 +45,13 @@ class ClientsController < ApplicationController
   private
 
   def set_client
-    @client = Rails.cache.fetch("client:#{params[:id]}", expires_in: 5.minutes, skip_nil: true ) do
+    @client = Rails.cache.fetch("client:#{params[:id]}", expires_in: 30.minutes, skip_nil: true ) do
       Client.find(params[:id])
     end
   end
 
   def client_params
-    params.permit(:name, :last_name, :addres, :date_of_birth, :comment, :phone, :email)
+    params.permit(:name, :last_name, :addres, :date_of_birth, :comment, :phone, :email) #.merge(user_id: current_user.id)
   end
 
   def expire_cache_for(client)
