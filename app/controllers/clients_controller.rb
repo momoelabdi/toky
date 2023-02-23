@@ -1,15 +1,17 @@
 class ClientsController < ApplicationController
+  include ActionController::EtagWithTemplateDigest
   include ActionController::ConditionalGet
 
   before_action :set_client, only: [:show, :update, :destroy]
 
   def index
-    @clients = Rails.cache.fetch('clients', expires_in: 30.minutes, skip_nil: true ) do
+    @clients = Rails.cache.fetch('clients', expires_in: 30.minutes, skip_nil: true) do
       clients = Client.order(id: :desc).all
-      fresh_when(etag: clients, public: true)
+      fresh_when(clients, strong_etag: true)
       clients
     end
   end
+  
 
   def create
     if client.save
