@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# 50.times do |i|
+# 10.times do |i|
 #     Client.create(
 #         name: "Hanks #{i + 1}",
 #         last_name: "Doe ",
