@@ -7,18 +7,10 @@ class StaffPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? == true
+    if user.admin? == true
   end
 
   def destroy?
     user.admin? == true
   end
-
-  def new
-    create?
-  end
-
-
-
-
 end
