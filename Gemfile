@@ -39,7 +39,8 @@ gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
 gem 'hiredis'
-# gem 'actionpack-action_caching'
+gem 'pundit'
+
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
